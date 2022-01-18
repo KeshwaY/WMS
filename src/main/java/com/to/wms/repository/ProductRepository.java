@@ -14,4 +14,11 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     Product findProductByLocationShelf(String shelf);
 
     List<Product> findAllProductsByCategoryName(String categoryName);
+
+    /**
+     *
+     * @param productName name of product
+     * @return value which specifies number of products by name
+     */
+    Integer countByName(String productName);
 }
