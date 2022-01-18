@@ -9,9 +9,7 @@ import com.to.wms.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ProductService {
@@ -36,13 +34,15 @@ public class ProductService {
         return productRepository.findProductByName(productName);
     }
 
+//TODO: FIX THAT TO RETURN LIST<PRODUCT>, CHANGE IN REPOSITORY & HERE"
     @Transactional(readOnly = true)
     public Product getProductByLocation(String shelf) {
         return productRepository.findProductByLocationShelf(shelf);
     }
 
+//TODO: FIX THAT TO RETURN LIST<PRODUCT>, CHANGE IN REPOSITORY & HERE"
     @Transactional(readOnly = true)
-    public Product getProductsByCategory(String categoryName) {
+    public Product getProductByCategory(String categoryName) {
         return productRepository.findProductByCategoryName(categoryName);
     }
 
