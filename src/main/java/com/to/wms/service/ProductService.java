@@ -40,10 +40,9 @@ public class ProductService {
         return productRepository.findProductByLocationShelf(shelf);
     }
 
-//TODO: FIX THAT TO RETURN LIST<PRODUCT>, CHANGE IN REPOSITORY & HERE"
     @Transactional(readOnly = true)
-    public Product getProductByCategory(String categoryName) {
-        return productRepository.findProductByCategoryName(categoryName);
+    public List<Product> getProductByCategory(String categoryName) {
+        return productRepository.findAllProductsByCategoryName(categoryName);
     }
 
     public void addProduct(String categoryName, String shelf, Product product) {
@@ -78,5 +77,4 @@ public class ProductService {
     public void deleteProduct(String productId) {
         productRepository.deleteById(productId);
     }
-
 }
