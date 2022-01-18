@@ -54,6 +54,13 @@ public class ProductService {
         productRepository.save(product);
     }
 
+    public void addProductToCategory(String categoryName, String productName) {
+        Category category = categoryRepository.findCategoryByName(categoryName);
+        Product product = productRepository.findProductByName(productName);
+        product.setCategory(category);
+        productRepository.save(product);
+    }
+
     public void editProductQuantity(String productId, Integer quantity) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("No such product found"));
         product.setQuantity(quantity);
