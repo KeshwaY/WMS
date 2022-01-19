@@ -1,9 +1,6 @@
 package com.to.wms.controller;
 
-
-import com.to.wms.model.Address;
 import com.to.wms.model.Product;
-import com.to.wms.repository.ProductRepository;
 import com.to.wms.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +24,28 @@ public class ProductController {
         List<?> products = productService.getAll();
         return ResponseEntity.ok(products);
     }
+    @GetMapping("/quantity/{productName}")
+    public ResponseEntity<Integer> getProductQuantity(@PathVariable String productName) {
+        Integer quantity = productService.getProductQuantity(productName);
+        return ResponseEntity.ok(quantity);
+    }
 
     @GetMapping("/name")
     public ResponseEntity<Product> getProductByName(@RequestParam String name) {
         Product product = productService.getProductByName(name);
         return ResponseEntity.ok(product);
+    }
+
+    @GetMapping("/shelf")
+    public ResponseEntity<List<Product>> getProductsByLocation(@RequestParam String shelf) {
+        List<Product> products = productService.getProductsByLocation(shelf);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<List<Product>> getProductsByCategory(@RequestParam String category) {
+        List<Product> products = productService.getProductsByCategory(category);
+        return ResponseEntity.ok(products);
     }
 
     @PostMapping("/add")

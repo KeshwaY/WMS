@@ -40,6 +40,9 @@ public class ProductService extends BasicGenericService<ProductRepository>{
         return productRepository.findAllProductsByCategoryName(categoryName);
     }
 
+    public Integer getProductQuantity(String productName){
+       return getProductByName(productName).getQuantity();
+    }
     public void addProduct(String categoryName, String shelf, Product product) {
         Location location = locationRepository.findLocationByShelf(shelf);
         Category category = categoryRepository.findCategoryByName(categoryName);
@@ -68,5 +71,6 @@ public class ProductService extends BasicGenericService<ProductRepository>{
         product.setQuantity(productToUpdate.getQuantity());
         productRepository.save(product);
     }
+
 
 }

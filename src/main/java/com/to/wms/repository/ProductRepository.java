@@ -20,4 +20,5 @@ public interface ProductRepository extends MongoRepository<Product, String> {
      * @return value which specifies number of products by name
      */
     Integer countByName(String productName);
+
 }
