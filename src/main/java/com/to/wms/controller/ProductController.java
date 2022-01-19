@@ -9,15 +9,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<?>> getAllProducts() {
+        List<?> products = productService.getAll();
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping
+    public ResponseEntity<Product> getProductByName(@RequestParam String name) {
+        Product product = productService.getProductByName(name);
+        return ResponseEntity.ok(product);
     }
 
     @PostMapping("/add")
@@ -25,8 +38,9 @@ public class ProductController {
                                               @RequestParam String shelf) {
 
         productService.addProduct(categoryName, shelf, product);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
 
 
 
