@@ -12,21 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class ProductService {
+public class ProductService extends BasicGenericService<ProductRepository>{
 
     private final ProductRepository productRepository;
     private final LocationRepository locationRepository;
     private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository, LocationRepository locationRepository, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository genericProductRepository, ProductRepository productRepository, LocationRepository locationRepository, CategoryRepository categoryRepository) {
+        super(genericProductRepository);
         this.productRepository = productRepository;
         this.locationRepository = locationRepository;
         this.categoryRepository = categoryRepository;
-    }
-
-    @Transactional(readOnly = true)
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
     }
 
     @Transactional(readOnly = true)
@@ -52,7 +48,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void addProductToCategory(String categoryName, String productName) {
+    public void updateProductCategory(String categoryName, String productName) {
         Category category = categoryRepository.findCategoryByName(categoryName);
         Product product = productRepository.findProductByName(productName);
         product.setCategory(category);
@@ -71,9 +67,5 @@ public class ProductService {
         product.setName(productToUpdate.getName());
         product.setQuantity(productToUpdate.getQuantity());
         productRepository.save(product);
-    }
-
-    public void deleteProduct(String productId) {
-        productRepository.deleteById(productId);
     }
 }

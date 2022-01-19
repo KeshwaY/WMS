@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DepartmentRepository extends MongoRepository<Department, String> {
+
+    Department findDepartmentByAddressCity(String city);
+
+    Department findDepartmentByName(String departmentName);
 }
