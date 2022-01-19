@@ -51,4 +51,10 @@ public class LocationController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<Void> deleteById(@PathVariable String id) {
+        locationService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
