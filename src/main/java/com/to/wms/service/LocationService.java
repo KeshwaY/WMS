@@ -37,7 +37,7 @@ public class LocationService extends BasicGenericService<LocationRepository>{
         locationRepository.save(location);
     }
 
-    public void editLocation(String locationId, Location locationToUpdate) {
+    public void editLocationById(String locationId, Location locationToUpdate) {
         Location location = locationRepository.findById(locationId).orElseThrow(() -> new IllegalStateException("Location not found"));
         location.setShelf(locationToUpdate.getShelf());
         locationRepository.save(location);
