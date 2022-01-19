@@ -58,10 +58,13 @@ public class ProductController {
     public ResponseEntity<Void> editProduct(@RequestBody Product productToUpdate, @PathVariable String productName) {
         productService.editProduct(productName, productToUpdate);
         return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
-
-
-
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<Void> deleteProduct(@PathVariable String id) {
+        productService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
