@@ -42,17 +42,24 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/{productName}")
+    @PutMapping("/category/{productName}")
     public ResponseEntity<Void> updateProductCategory(@RequestParam String category, @PathVariable String productName) {
         productService.updateProductCategory(category, productName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/quantity/{productName}")
-    public ResponseEntity<Void> editProductQuantity(@RequestParam String quantity, @PathVariable String productName) {
+    @PatchMapping("/quantity/{productName}")
+    public ResponseEntity<Void> editProductQuantity(@RequestParam Integer quantity, @PathVariable String productName) {
         productService.editProductQuantity(productName, quantity);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PutMapping("/{productName}")
+    public ResponseEntity<Void> editProduct(@RequestBody Product productToUpdate, @PathVariable String productName) {
+        productService.editProduct(productName, productToUpdate);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 
 
