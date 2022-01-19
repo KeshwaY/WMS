@@ -68,4 +68,5 @@ public class ProductService extends BasicGenericService<ProductRepository>{
         product.setQuantity(productToUpdate.getQuantity());
         productRepository.save(product);
     }
+
 }
