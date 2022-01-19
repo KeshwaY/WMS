@@ -2,8 +2,10 @@ package com.to.wms.service;
 
 import com.to.wms.model.Location;
 import com.to.wms.repository.LocationRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class LocalisationService extends BasicGenericService<LocationRepository>{
 
     private final LocationRepository locationRepository;

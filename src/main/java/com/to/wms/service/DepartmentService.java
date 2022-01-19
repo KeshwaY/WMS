@@ -4,8 +4,10 @@ import com.to.wms.model.Address;
 import com.to.wms.model.Department;
 import com.to.wms.repository.AddressRepository;
 import com.to.wms.repository.DepartmentRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class DepartmentService extends BasicGenericService<DepartmentRepository>{
 
     private final DepartmentRepository departmentRepository;
