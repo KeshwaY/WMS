@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class LocalisationService extends BasicGenericService<LocationRepository>{
+public class LocationService extends BasicGenericService<LocationRepository>{
 
     private final LocationRepository locationRepository;
     private final DepartmentRepository departmentRepository;
 
-    public LocalisationService(LocationRepository genericLocationRepository, LocationRepository locationRepository, DepartmentRepository departmentRepository) {
+    public LocationService(LocationRepository genericLocationRepository, LocationRepository locationRepository, DepartmentRepository departmentRepository) {
         super(genericLocationRepository);
         this.locationRepository = locationRepository;
         this.departmentRepository = departmentRepository;
