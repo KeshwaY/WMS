@@ -34,14 +34,13 @@ public class ProductService {
         return productRepository.findProductByName(productName);
     }
 
-//TODO: FIX THAT TO RETURN LIST<PRODUCT>, CHANGE IN REPOSITORY & HERE"
     @Transactional(readOnly = true)
-    public Product getProductByLocation(String shelf) {
-        return productRepository.findProductByLocationShelf(shelf);
+    public List<Product> getProductsByLocation(String shelf) {
+        return productRepository.findAllProductsByLocationShelf(shelf);
     }
 
     @Transactional(readOnly = true)
-    public List<Product> getProductByCategory(String categoryName) {
+    public List<Product> getProductsByCategory(String categoryName) {
         return productRepository.findAllProductsByCategoryName(categoryName);
     }
 

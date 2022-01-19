@@ -1,6 +1,5 @@
 package com.to.wms.repository;
 
-import com.to.wms.model.Location;
 import com.to.wms.model.Product;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,7 @@ import java.util.List;
 public interface ProductRepository extends MongoRepository<Product, String> {
     Product findProductByName(String productName);
 
-    Product findProductByLocationShelf(String shelf);
+    List<Product> findAllProductsByLocationShelf(String shelf);
 
     List<Product> findAllProductsByCategoryName(String categoryName);
 
