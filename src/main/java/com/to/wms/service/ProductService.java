@@ -55,8 +55,8 @@ public class ProductService extends BasicGenericService<ProductRepository>{
         productRepository.save(product);
     }
 
-    public void editProductQuantity(String productId, Integer quantity) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("No such product found"));
+    public void editProductQuantity(String productName, Integer quantity) {
+        Product product = productRepository.findById(productName).orElseThrow(() -> new IllegalStateException("No such product found"));
         product.setQuantity(quantity);
         productRepository.save(product);
     }

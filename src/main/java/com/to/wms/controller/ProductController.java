@@ -22,13 +22,13 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<?>> getAllProducts() {
         List<?> products = productService.getAll();
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/by-name")
+    @GetMapping("/name")
     public ResponseEntity<Product> getProductByName(@RequestParam String name) {
         Product product = productService.getProductByName(name);
         return ResponseEntity.ok(product);
@@ -47,6 +47,13 @@ public class ProductController {
         productService.updateProductCategory(category, productName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PutMapping("/quantity/{productName}")
+    public ResponseEntity<Void> editProductQuantity(@RequestParam String quantity, @PathVariable String productName) {
+        productService.editProductQuantity(productName, quantity);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 
 
