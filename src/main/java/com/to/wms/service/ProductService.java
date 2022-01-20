@@ -40,6 +40,9 @@ public class ProductService extends BasicGenericService<ProductRepository>{
         return productRepository.findAllProductsByCategoryName(categoryName);
     }
 
+    public Integer getProductQuantity(String productName){
+       return getProductByName(productName).getQuantity();
+    }
     public void addProduct(String categoryName, String shelf, Product product) {
         Location location = locationRepository.findLocationByShelf(shelf);
         Category category = categoryRepository.findCategoryByName(categoryName);
@@ -55,18 +58,19 @@ public class ProductService extends BasicGenericService<ProductRepository>{
         productRepository.save(product);
     }
 
-    public void editProductQuantity(String productId, Integer quantity) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("No such product found"));
+    public void editProductQuantity(String productName, Integer quantity) {
+        Product product = productRepository.findById(productName).orElseThrow(() -> new IllegalStateException("No such product found"));
         product.setQuantity(quantity);
         productRepository.save(product);
     }
 
-    public void editProduct(String productId, Product productToUpdate) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("No such product found"));
+    public void editProduct(String productName, Product productToUpdate) {
+        Product product = productRepository.findById(productName).orElseThrow(() -> new IllegalStateException("No such product found"));
         product.setDescription(productToUpdate.getDescription());
         product.setName(productToUpdate.getName());
         product.setQuantity(productToUpdate.getQuantity());
         productRepository.save(product);
     }
+
 
 }

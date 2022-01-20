@@ -10,8 +10,16 @@ public class Category {
 
     @Id
     private String id;
+
     @NotBlank(message = "name has to be provided")
     private String name;
+
+    public Category() {
+    }
+
+    public Category(String name) {
+        this.name = name;
+    }
 
     public String getId() {
         return id;

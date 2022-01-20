@@ -20,9 +20,9 @@ public class AddressController {
     }
 
     @GetMapping
-    public ResponseEntity<List<?>> getAllAddresses() {
-        List<?> addresses = addressService.getAll();
-        return ResponseEntity.ok(addresses);
+    public ResponseEntity<List<?>> getAll() {
+        List<?> adresses = addressService.getAll();
+        return ResponseEntity.ok(adresses);
     }
 
     @GetMapping("/by-city")

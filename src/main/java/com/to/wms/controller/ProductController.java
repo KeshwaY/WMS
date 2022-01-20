@@ -1,9 +1,6 @@
 package com.to.wms.controller;
 
-
-import com.to.wms.model.Address;
 import com.to.wms.model.Product;
-import com.to.wms.repository.ProductRepository;
 import com.to.wms.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +19,33 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<?>> getAllProducts() {
         List<?> products = productService.getAll();
         return ResponseEntity.ok(products);
     }
+    @GetMapping("/quantity/{productName}")
+    public ResponseEntity<Integer> getProductQuantity(@PathVariable String productName) {
+        Integer quantity = productService.getProductQuantity(productName);
+        return ResponseEntity.ok(quantity);
+    }
 
-    @GetMapping("/by-name")
+    @GetMapping("/name")
     public ResponseEntity<Product> getProductByName(@RequestParam String name) {
         Product product = productService.getProductByName(name);
         return ResponseEntity.ok(product);
+    }
+
+    @GetMapping("/shelf")
+    public ResponseEntity<List<Product>> getProductsByLocation(@RequestParam String shelf) {
+        List<Product> products = productService.getProductsByLocation(shelf);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<List<Product>> getProductsByCategory(@RequestParam String category) {
+        List<Product> products = productService.getProductsByCategory(category);
+        return ResponseEntity.ok(products);
     }
 
     @PostMapping("/add")
@@ -42,12 +56,29 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/{productName}")
+    @PutMapping("/category/{productName}")
     public ResponseEntity<Void> updateProductCategory(@RequestParam String category, @PathVariable String productName) {
         productService.updateProductCategory(category, productName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PatchMapping("/quantity/{productId}")
+    public ResponseEntity<Void> editProductQuantity(@RequestParam Integer quantity, @PathVariable String productId) {
+        productService.editProductQuantity(productId, quantity);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
+    @PutMapping("/{productId}")
+    public ResponseEntity<Void> editProduct(@RequestBody Product productToUpdate, @PathVariable String productId) {
+        productService.editProduct(productId, productToUpdate);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("/{productId}")
+    public  ResponseEntity<Void> deleteById(@PathVariable String productId) {
+        productService.deleteById(productId);
+        return ResponseEntity.noContent().build();
+    }
 
 }
