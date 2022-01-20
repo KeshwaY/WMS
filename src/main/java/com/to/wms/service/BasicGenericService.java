@@ -8,18 +8,18 @@ import java.util.List;
 
 public abstract class BasicGenericService<RepositoryT extends MongoRepository<?, String>> {
 
-    private final RepositoryT repositoryT;
+    protected final RepositoryT repository;
 
-    public BasicGenericService(RepositoryT repositoryT) {
-        this.repositoryT = repositoryT;
+    public BasicGenericService(RepositoryT repository) {
+        this.repository = repository;
     }
 
     @Transactional(readOnly = true)
     public List<?> getAll() {
-        return repositoryT.findAll();
+        return repository.findAll();
     }
 
     public void deleteById(String id) {
-        repositoryT.deleteById(id);
+        repository.deleteById(id);
     }
 }
