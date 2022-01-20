@@ -1,5 +1,6 @@
 package com.to.wms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -22,9 +23,11 @@ public class Product {
     private Integer quantity;
 
     @DocumentReference
+    @JsonIgnore
     private Category category;
 
     @DocumentReference
+    @JsonIgnore
     private Location location;
 
     public String getId() {

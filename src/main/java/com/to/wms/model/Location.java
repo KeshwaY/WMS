@@ -1,5 +1,6 @@
 package com.to.wms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -15,6 +16,7 @@ public class Location {
     private String shelf;
 
     @DocumentReference
+    @JsonIgnore
     private Department department;
 
     @DocumentReference(lazy = true)
