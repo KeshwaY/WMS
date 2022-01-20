@@ -33,7 +33,7 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Void> addCategory(@Valid @RequestBody Category category) {
+    public ResponseEntity<Void> addCategory( @RequestBody Category category) {
         categoryService.addCategory(category);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

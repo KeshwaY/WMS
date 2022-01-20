@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 
-@Document(collation = "roles")
+@Document(collection = "roles")
 public class Role {
 
     @Id

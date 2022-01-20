@@ -62,22 +62,22 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PatchMapping("/quantity/{productName}")
-    public ResponseEntity<Void> editProductQuantity(@RequestParam Integer quantity, @PathVariable String productName) {
-        productService.editProductQuantity(productName, quantity);
+    @PatchMapping("/quantity/{productId}")
+    public ResponseEntity<Void> editProductQuantity(@RequestParam Integer quantity, @PathVariable String productId) {
+        productService.editProductQuantity(productId, quantity);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/{productName}")
-    public ResponseEntity<Void> editProduct(@RequestBody Product productToUpdate, @PathVariable String productName) {
-        productService.editProduct(productName, productToUpdate);
+    @PutMapping("/{productId}")
+    public ResponseEntity<Void> editProduct(@RequestBody Product productToUpdate, @PathVariable String productId) {
+        productService.editProduct(productId, productToUpdate);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
-    @DeleteMapping("/{id}")
-    public  ResponseEntity<Void> deleteById(@PathVariable String id) {
-        productService.deleteById(id);
+    @DeleteMapping("/{productId}")
+    public  ResponseEntity<Void> deleteById(@PathVariable String productId) {
+        productService.deleteById(productId);
         return ResponseEntity.noContent().build();
     }
 

@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 
-@Document(collation = "address")
+@Document
 public class Address {
 
     @Id
@@ -25,6 +25,14 @@ public class Address {
 
     @NotBlank(message = "number has to be provided")
     private String number;
+
+    public Address(String country, String city, String postCode, String street, String number) {
+        this.country = country;
+        this.city = city;
+        this.postCode = postCode;
+        this.street = street;
+        this.number = number;
+    }
 
     public String getId() {
         return id;
