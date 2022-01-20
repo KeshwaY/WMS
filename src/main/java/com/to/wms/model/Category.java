@@ -14,6 +14,8 @@ public class Category {
     @NotBlank(message = "name has to be provided")
     private String name;
 
+    public Category() {
+    }
 
     public Category(String name) {
         this.name = name;
