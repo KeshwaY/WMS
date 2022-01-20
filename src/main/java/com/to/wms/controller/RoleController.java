@@ -21,6 +21,12 @@ public class RoleController {
         this.roleService = roleService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<?>> getAll() {
+        List<?> roles = roleService.getAll();
+        return new ResponseEntity<>(roles, HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Void> addRole(
             @RequestBody @Valid Role role,
