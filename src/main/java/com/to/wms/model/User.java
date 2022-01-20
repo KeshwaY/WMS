@@ -2,11 +2,13 @@ package com.to.wms.model;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -16,6 +18,7 @@ public class User {
     @Id
     private String id;
 
+    @Indexed(unique = true)
     @NotBlank(message = "login has to be provided")
     private String login;
 
@@ -33,6 +36,7 @@ public class User {
     private String phoneNumber;
 
     @Email
+    @NotBlank
     private String email;
 
     @DocumentReference
