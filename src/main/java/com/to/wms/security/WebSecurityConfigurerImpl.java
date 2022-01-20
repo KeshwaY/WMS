@@ -39,6 +39,7 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // ADDRESS
                 .mvcMatchers(
+                        HttpMethod.GET,
                         "/api/v1/address",
                         "/api/v1/address/by-city"
                 ).hasAuthority("WAREHOUSEMAN_ADDRESS")
@@ -48,6 +49,7 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/v1/departments/**").hasAuthority("OP_DEPARTMENTS_MANAGEMENT")
                 // LOCATIONS
                 .mvcMatchers(
+                        HttpMethod.GET,
                         "/api/v1/locations/locations",
                         "/api/v1/locations/shelf",
                         "/api/v1/locations/department"
@@ -55,12 +57,14 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/v1/locations/**").hasAuthority("OP_LOCATIONS_MANAGEMENT")
                 // CATEGORY
                 .mvcMatchers(
+                        HttpMethod.GET,
                         "/api/v1/categories/by-name",
                         "/api/v1/categories"
                 ).hasAuthority("WAREHOUSE_CATEGORY")
                 .mvcMatchers("/api/v1/categories/**").hasAuthority("OP_CATEGORY_MANAGEMENT")
                 // PRODUCT
                 .mvcMatchers(
+                        HttpMethod.GET,
                         "/api/v1/products/quantity/*",
                         "/api/v1/products/name",
                         "/api/v1/products/shelf",

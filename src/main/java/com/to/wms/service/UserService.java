@@ -30,9 +30,16 @@ public class UserService  extends BasicGenericService<UserRepository> {
     }
 
     public void addUser(User user) {
+        checkIfUserExists(user.getLogin(), user.getEmail());
         user.setRole(getUserRole());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         repository.save(user);
+    }
+
+    private void checkIfUserExists(String login, String email) throws IllegalStateException {
+        if (repository.findUserByLogin(login).isPresent() || repository.findByEmail(email).isPresent() ) {
+            throw new IllegalStateException("User already exists!");
+        }
     }
 
     public Role getUserRole() {
