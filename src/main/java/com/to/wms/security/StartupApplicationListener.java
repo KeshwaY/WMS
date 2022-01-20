@@ -30,6 +30,7 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
                 "OP_USER_MANAGEMENT"
         );
         List<String> managerAuthoritiesNames = List.of(
+                "OP_ADDRESS_MANAGEMENT",
                 "OP_DEPARTMENTS_MANAGEMENT",
                 "OP_LOCATIONS_MANAGEMENT",
                 "OP_CATEGORY_MANAGEMENT",
@@ -37,6 +38,7 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
         );
         List<String> userAuthoritiesNames = List.of(
                 "BASIC_USER",
+                "WAREHOUSEMAN_ADDRESS",
                 "WAREHOUSEMAN_DEPARTMENTS",
                 "WAREHOUSEMAN_LOCATIONS",
                 "WAREHOUSE_CATEGORY",

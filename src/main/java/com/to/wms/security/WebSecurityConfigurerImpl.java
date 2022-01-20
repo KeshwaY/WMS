@@ -37,6 +37,12 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(getRestAuthenticationEntryPoint())
                 .and()
                 .authorizeRequests()
+                // ADDRESS
+                .mvcMatchers(
+                        "/api/v1/address",
+                        "/api/v1/address/by-city"
+                ).hasAuthority("WAREHOUSEMAN_ADDRESS")
+                .mvcMatchers("/api/v1/address/**").hasAuthority("OP_ADDRESS_MANAGEMENT")
                 // DEPARTMENT
                 .mvcMatchers("/api/v1/departments/by-name").hasAuthority("WAREHOUSEMAN_DEPARTMENTS")
                 .mvcMatchers("/api/v1/departments/**").hasAuthority("OP_DEPARTMENTS_MANAGEMENT")
