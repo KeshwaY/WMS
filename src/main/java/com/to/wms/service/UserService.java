@@ -1,12 +1,19 @@
 package com.to.wms.service;
 
 import com.to.wms.controller.dto.GenericPutDto;
+import com.to.wms.controller.dto.GenericResponseDto;
+import com.to.wms.controller.dto.role.UserMapper;
+import com.to.wms.controller.dto.role.UserPostDto;
 import com.to.wms.model.Authority;
 import com.to.wms.model.Role;
 import com.to.wms.model.User;
 import com.to.wms.repository.AuthorityRepository;
 import com.to.wms.repository.RoleRepository;
 import com.to.wms.repository.UserRepository;
+import com.to.wms.service.exceptions.LoginAlreadyExistException;
+import com.to.wms.service.exceptions.RoleNotFoundException;
+import com.to.wms.service.exceptions.UserAlreadyExistException;
+import com.to.wms.service.exceptions.UserNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,29 +23,38 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Service
-public class UserService  extends BasicGenericService<UserRepository> {
+public class UserService extends BasicGenericService<UserRepository> {
 
     private final RoleRepository roleRepository;
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
+    public UserService(
+            UserRepository userRepository,
+            RoleRepository roleRepository,
+            AuthorityRepository authorityRepository,
+            PasswordEncoder passwordEncoder,
+            UserMapper userMapper
+    ) {
         super(userRepository);
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.userMapper = userMapper;
     }
 
-    public void addUser(User user) {
-        checkIfUserExists(user.getLogin(), user.getEmail());
+    public User addUser(UserPostDto postDto) throws UserAlreadyExistException {
+        checkIfUserExists(postDto.getLogin(), postDto.getEmail());
+        User user = userMapper.userPostDtoToUser(postDto);
         user.setRole(getUserRole());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        repository.save(user);
+        user.setPassword(passwordEncoder.encode(postDto.getPassword()));
+        return repository.save(user);
     }
 
-    private void checkIfUserExists(String login, String email) throws IllegalStateException {
+    private void checkIfUserExists(String login, String email) throws IllegalStateException, UserAlreadyExistException {
         if (repository.findUserByLogin(login).isPresent() || repository.findByEmail(email).isPresent() ) {
-            throw new IllegalStateException("User already exists!");
+            throw new UserAlreadyExistException();
         }
     }
 
@@ -52,12 +68,12 @@ public class UserService  extends BasicGenericService<UserRepository> {
     }
 
     @Transactional(readOnly = true)
-    public User getUserByName(String login) {
-        return repository.findUserByLogin(login).orElseThrow();
+    public User getUserByName(String login) throws UserNotFoundException {
+        return repository.findUserByLogin(login).orElseThrow(UserNotFoundException::new);
     }
 
-    public User updateUser(String login, String changeType, GenericPutDto genericPutDto) {
-        User user = repository.findUserByLogin(login).orElseThrow(() -> new IllegalStateException("No such user found"));
+    public User updateUser(String login, String changeType, GenericPutDto genericPutDto) throws RoleNotFoundException, LoginAlreadyExistException, UserNotFoundException {
+        User user = repository.findUserByLogin(login).orElseThrow(UserNotFoundException::new);
         switch (changeType) {
             case "email":
                 user.setEmail(genericPutDto.getNewValue());
@@ -69,24 +85,21 @@ public class UserService  extends BasicGenericService<UserRepository> {
                 String newLogin = genericPutDto.getNewValue();
                 Optional<User> userWithLogin = repository.findUserByLogin(newLogin);
                 if (userWithLogin.isPresent()) {
-                    throw new IllegalStateException("Login is not unique!");
+                    throw new LoginAlreadyExistException();
                 }
                 user.setLogin(newLogin);
                 break;
             case "name":
                 user.setName(genericPutDto.getNewValue());
                 break;
-            case "surname":
-                user.setSurname(genericPutDto.getNewValue());
+            case "lastname":
+                user.setLastname(genericPutDto.getNewValue());
                 break;
             case "phone_number":
                 user.setPhoneNumber(genericPutDto.getNewValue());
                 break;
             case "role":
-                Role newRole = roleRepository.findByName(genericPutDto.getNewValue().toUpperCase(Locale.ROOT));
-                if (newRole == null) {
-                    throw new IllegalStateException("Role does not exist!");
-                }
+                Role newRole = roleRepository.findByName(genericPutDto.getNewValue().toUpperCase(Locale.ROOT)).orElseThrow(RoleNotFoundException::new);
                 user.setRole(newRole);
                 break;
             default:
@@ -95,8 +108,9 @@ public class UserService  extends BasicGenericService<UserRepository> {
         return repository.save(user);
     }
 
-    public void deleteUser(String userId) {
-        User user = repository.findUserByLogin(userId).orElseThrow(() -> new IllegalStateException("No such user found"));
+    public GenericResponseDto deleteUser(String userId) throws UserNotFoundException {
+        User user = repository.findUserByLogin(userId).orElseThrow(UserNotFoundException::new);
         repository.delete(user);
+        return new GenericResponseDto("Successfully deleted user!");
     }
 }

@@ -36,6 +36,7 @@ public class CategoryService {
             throw new CategoryAlreadyExistException();
         }
         Category category = mapper.categoryPostDtoToCategory(categoryPostDto);
+        categoryRepository.save(category);
         return mapper.categoryToCategoryGetDto(category);
     }
 

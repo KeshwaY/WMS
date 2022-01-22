@@ -39,7 +39,7 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     public ResponseEntity<CategoryGetDto> addCategory(
             @Valid @RequestBody CategoryPostDto category
     ) throws CategoryAlreadyExistException {

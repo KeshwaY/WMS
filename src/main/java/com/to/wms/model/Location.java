@@ -14,7 +14,6 @@ public class Location {
     @Id
     private String id;
 
-    @Indexed(unique = true)
     private String shelf;
 
     @DocumentReference

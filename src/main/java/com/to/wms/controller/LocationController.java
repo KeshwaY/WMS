@@ -1,7 +1,14 @@
 package com.to.wms.controller;
 
+import com.to.wms.controller.dto.GenericResponseDto;
+import com.to.wms.controller.dto.location.LocationGetDto;
+import com.to.wms.controller.dto.location.LocationPostDto;
+import com.to.wms.controller.dto.location.LocationWithProductsGetDto;
 import com.to.wms.model.Location;
 import com.to.wms.service.LocationService;
+import com.to.wms.service.exceptions.DepartmentNotFoundException;
+import com.to.wms.service.exceptions.LocationAlreadyExistException;
+import com.to.wms.service.exceptions.LocationNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,41 +27,53 @@ public class LocationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<?>> getAllLocations() {
-        List<?> locations = locationService.getAll();
+    public ResponseEntity<List<LocationGetDto>> getAllLocations() {
+        List<LocationGetDto> locations = locationService.getAll();
         return ResponseEntity.ok(locations);
     }
 
-    @GetMapping("/shelf")
-    public ResponseEntity<Location> getLocationByShelf(@RequestParam String shelf) {
-        Location location = locationService.getLocationByShelf(shelf);
+    @GetMapping("/{department}/{shelf}")
+    public ResponseEntity<LocationWithProductsGetDto> getLocationByShelf(
+            @PathVariable String department,
+            @PathVariable String shelf
+    ) throws LocationNotFoundException, DepartmentNotFoundException {
+        LocationWithProductsGetDto location = locationService.getLocationByShelfAndDepartment(department, shelf);
         return ResponseEntity.ok(location);
     }
 
 
-    @GetMapping("/department")
-    public ResponseEntity<List<Location>> getAllLocationsByDepartment(@RequestParam String departmentName) {
-        List<Location> locations = locationService.getAllLocationsByDepartment(departmentName);
+    @GetMapping("/{department}")
+    public ResponseEntity<List<LocationGetDto>> getAllLocationsByDepartment(
+            @PathVariable String department
+    ) throws LocationNotFoundException {
+        List<LocationGetDto> locations = locationService.getAllLocationsByDepartment(department);
         return ResponseEntity.ok(locations);
     }
 
 
-    @PostMapping("/add")
-    public ResponseEntity<Void> addLocation(@RequestBody @Valid Location location, @RequestParam String departmentName) {
-        locationService.addLocation(location, departmentName);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @PostMapping("/{department}")
+    public ResponseEntity<LocationGetDto> addLocation(
+            @PathVariable String department,
+            @RequestBody @Valid LocationPostDto locationPostDto
+    ) throws LocationAlreadyExistException, DepartmentNotFoundException {
+        return new ResponseEntity<>(locationService.addLocation(department, locationPostDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{locationId}")
-    public ResponseEntity<Void> editLocationById(@RequestBody Location locationToUpdate, @PathVariable String locationId) {
-        locationService.editLocationById(locationId, locationToUpdate);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping("/{department}/{shelf}")
+    public ResponseEntity<LocationGetDto> editLocationById(
+            @PathVariable String department,
+            @PathVariable String shelf,
+            @RequestBody @Valid LocationPostDto locationPostDto
+    ) throws LocationNotFoundException, DepartmentNotFoundException {
+        return new ResponseEntity<>(locationService.editLocation(department, shelf, locationPostDto), HttpStatus.OK);
 
     }
 
-    @DeleteMapping("/{id}")
-    public  ResponseEntity<Void> deleteById(@PathVariable String id) {
-        locationService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{department}/{shelf}")
+    public  ResponseEntity<GenericResponseDto> deleteById(
+            @PathVariable String department,
+            @PathVariable String shelf
+    ) throws LocationNotFoundException, DepartmentNotFoundException {
+        return new ResponseEntity<>(locationService.delete(department, shelf), HttpStatus.OK);
     }
 }
