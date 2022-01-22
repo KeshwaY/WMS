@@ -34,7 +34,8 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
                 "OP_DEPARTMENTS_MANAGEMENT",
                 "OP_LOCATIONS_MANAGEMENT",
                 "OP_CATEGORY_MANAGEMENT",
-                "OP_PRODUCT_MANAGEMENT"
+                "OP_PRODUCT_MANAGEMENT",
+                "OP_MANAGER_USER"
         );
         List<String> userAuthoritiesNames = List.of(
                 "BASIC_USER",

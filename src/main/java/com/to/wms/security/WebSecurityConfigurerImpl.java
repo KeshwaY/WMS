@@ -36,46 +36,47 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .authenticationEntryPoint(getRestAuthenticationEntryPoint())
                 .and()
+                .exceptionHandling()
+                .accessDeniedHandler(getCustomAccessDeniedHandler())
+                .and()
                 .authorizeRequests()
                 // ADDRESS
                 .mvcMatchers(
-                        HttpMethod.GET,
                         "/api/v1/address",
                         "/api/v1/address/by-city"
-                ).hasAuthority("WAREHOUSEMAN_ADDRESS")
+                ).hasAnyAuthority("OP_ADDRESS_MANAGEMENT", "WAREHOUSEMAN_ADDRESS")
                 .mvcMatchers("/api/v1/address/**").hasAuthority("OP_ADDRESS_MANAGEMENT")
                 // DEPARTMENT
-                .mvcMatchers("/api/v1/departments/by-name").hasAuthority("WAREHOUSEMAN_DEPARTMENTS")
+                .mvcMatchers("/api/v1/departments/by-name").hasAnyAuthority("OP_DEPARTMENTS_MANAGEMENT", "WAREHOUSEMAN_DEPARTMENTS")
                 .mvcMatchers("/api/v1/departments/**").hasAuthority("OP_DEPARTMENTS_MANAGEMENT")
                 // LOCATIONS
                 .mvcMatchers(
-                        HttpMethod.GET,
-                        "/api/v1/locations/locations",
+                        "/api/v1/locations",
                         "/api/v1/locations/shelf",
                         "/api/v1/locations/department"
-                ).hasAuthority("WAREHOUSEMAN_LOCATIONS")
+                ).hasAnyAuthority("OP_LOCATIONS_MANAGEMENT", "WAREHOUSEMAN_LOCATIONS")
                 .mvcMatchers("/api/v1/locations/**").hasAuthority("OP_LOCATIONS_MANAGEMENT")
                 // CATEGORY
                 .mvcMatchers(
-                        HttpMethod.GET,
                         "/api/v1/categories/by-name",
                         "/api/v1/categories"
-                ).hasAuthority("WAREHOUSE_CATEGORY")
+                ).hasAnyAuthority("OP_CATEGORY_MANAGEMENT", "WAREHOUSE_CATEGORY")
                 .mvcMatchers("/api/v1/categories/**").hasAuthority("OP_CATEGORY_MANAGEMENT")
                 // PRODUCT
                 .mvcMatchers(
-                        HttpMethod.GET,
-                        "/api/v1/products/quantity/*",
+                        "/api/v1/products",
+                        "/api/v1/products/quantity/**",
                         "/api/v1/products/name",
                         "/api/v1/products/shelf",
                         "/api/v1/products/category"
-                ).hasAuthority("WAREHOUSEMAN_PRODUCT")
+                ).hasAnyAuthority("OP_PRODUCT_MANAGEMENT", "WAREHOUSEMAN_PRODUCT")
                 .mvcMatchers("/api/v1/products/**").hasAuthority("OP_PRODUCT_MANAGEMENT")
                 // ROLES
                 .mvcMatchers("/api/v1/roles/**").hasAuthority("OP_ROLE_MANAGEMENT")
                 .mvcMatchers("/api/v1/authorities/**").hasAuthority("OP_ROLE_MANAGEMENT")
                 // USERS
-                .mvcMatchers(HttpMethod.POST, "/api/v1/users/add").anonymous()
+                .mvcMatchers(HttpMethod.POST, "/api/v1/users/add").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/v1/users").hasAnyAuthority("OP_USER_MANAGEMENT", "OP_MANAGER_USER")
                 .mvcMatchers("/api/v1/users/**").hasAuthority("OP_USER_MANAGEMENT")
                 // OTHERS
                 .mvcMatchers("/**").permitAll()
@@ -87,6 +88,11 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
     @Bean
     public RestAuthenticationEntryPoint getRestAuthenticationEntryPoint() {
         return new RestAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public CustomAccessDeniedHandler getCustomAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
     }
 
 }
