@@ -45,12 +45,11 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    @GetMapping(params = {"department", "shelf"})
+    @GetMapping(params = {"department"})
     public ResponseEntity<List<ProductGetDto>> getProductsByLocation(
-            @RequestParam String department,
-            @RequestParam String shelf
-    ) throws LocationNotFoundException, DepartmentNotFoundException {
-        List<ProductGetDto> products = productService.getProductsByLocation(department, shelf);
+            @RequestParam String department
+    ) throws DepartmentNotFoundException {
+        List<ProductGetDto> products = productService.getProductsByLocation(department);
         return ResponseEntity.ok(products);
     }
 

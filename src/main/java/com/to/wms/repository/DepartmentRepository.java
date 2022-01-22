@@ -12,8 +12,9 @@ import java.util.Optional;
 public interface DepartmentRepository extends MongoRepository<Department, String> {
 
     @Aggregation(pipeline = {
-            "{$lookup: {from: 'address', localField: 'address', foreignField: '_id', as: 'addressDoc'}}, " +
-                    "{$match: {'addressDoc.city': '?0'}}, {$project: {addressDoc: 0}}"
+            "{$lookup: {from: 'address', localField: 'address', foreignField: '_id', as: 'addressDoc'}}, ",
+            "{$match: {'addressDoc.city': '?0'}}",
+            "{$project: {addressDoc: 0}}"
     })
     List<Department> findByCityName(String city);
 

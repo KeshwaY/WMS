@@ -53,12 +53,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductGetDto> getProductsByLocation(String departmentName, String shelf) throws DepartmentNotFoundException, LocationNotFoundException {
-        Department department = departmentRepository.findDepartmentByName(departmentName).orElseThrow(DepartmentNotFoundException::new);
-        if (locationRepository.findByDepartmentAndShelf(department, shelf).isPresent()) {
-            throw new LocationNotFoundException();
-        }
-        return productRepository.findAllProductsByDepartmentNameAndShelf(departmentName, shelf).stream()
+    public List<ProductGetDto> getProductsByLocation(String departmentName) throws DepartmentNotFoundException {
+        departmentRepository.findDepartmentByName(departmentName).orElseThrow(DepartmentNotFoundException::new);
+        return productRepository.findAllProductsByDepartmentName(departmentName).stream()
                 .map(mapper::productToProductGetDto)
                 .collect(Collectors.toUnmodifiableList());
     }
@@ -93,7 +90,9 @@ public class ProductService {
         product.setLocation(location);
         product.setCategory(category);
         location.getProducts().add(product);
-        return mapper.productToProductWithLocationGetDto(productRepository.save(product));
+        productRepository.save(product);
+        locationRepository.save(location);
+        return mapper.productToProductWithLocationGetDto(product);
     }
 
     private Location findProductLocation(String departmentName, String shelf) throws DepartmentNotFoundException, LocationNotFoundException {

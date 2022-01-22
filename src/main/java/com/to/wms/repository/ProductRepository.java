@@ -17,14 +17,15 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     @Aggregation(pipeline = {
             "{$lookup: {from: 'location', localField: 'location', foreignField: '_id', as: 'locationDoc'}}",
             "{$lookup: {from: 'department', localField: 'locationDoc.department', foreignField: '_id', as: 'locationDepartmentDoc'}}",
-            "{$match: {'locationDoc.shelf': ?1, 'locationDepartmentDoc.name': ?0}}",
+            "{$match: {'locationDepartmentDoc.name': ?0}}",
             "{$project: {locationDoc: 0, locationDepartmentDoc:0}}"
     })
-    List<Product> findAllProductsByDepartmentNameAndShelf(String departmentName, String shelf);
+    List<Product> findAllProductsByDepartmentName(String departmentName);
 
     @Aggregation(pipeline = {
-            "{$lookup: {from: 'category', localField: 'category', foreignField: '_id', as: 'categoryDoc'}}, " +
-                    "{$match: {'categoryDoc.name': '?0'}}, {$project: {categoryDoc: 0}}"
+            "{$lookup: {from: 'category', localField: 'category', foreignField: '_id', as: 'categoryDoc'}}",
+            "{$match: {'categoryDoc.name': '?0'}}",
+            "{$project: {categoryDoc: 0}}"
     })
     List<Product> findAllProductsByCategoryName(String categoryName);
 

@@ -13,8 +13,9 @@ import java.util.Optional;
 @Repository
 public interface LocationRepository extends MongoRepository<Location, String> {
     @Aggregation(pipeline = {
-            "{$lookup: {from: 'department', localField: 'department', foreignField: '_id', as: 'departmentDoc'}}, " +
-                    "{$match: {'departmentDoc.name': '?0'}}, {$project: {departmentDoc: 0}}"
+            "{$lookup: {from: 'department', localField: 'department', foreignField: '_id', as: 'departmentDoc'}}",
+            "{$match: {'departmentDoc.name': '?0'}}",
+            "{$project: {departmentDoc: 0}}"
     })
     List<Location> findAllLocationsByDepartmentName(String departmentName);
 
