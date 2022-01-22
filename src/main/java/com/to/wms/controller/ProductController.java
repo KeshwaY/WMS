@@ -98,7 +98,7 @@ public class ProductController {
             @RequestParam String department,
             @RequestParam String shelf,
             @RequestBody @Valid ProductPutDto productPutDto
-            ) throws ProductNotFoundException, LocationNotFoundException, DepartmentNotFoundException {
+            ) throws ProductNotFoundException, LocationNotFoundException, DepartmentNotFoundException, ProductAlreadyExistException {
         ProductWithLocationGetDto product = productService.editProduct(productName, department, shelf, productPutDto);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }

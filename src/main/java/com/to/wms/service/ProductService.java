@@ -115,11 +115,13 @@ public class ProductService {
         return mapper.productToProductWithLocationGetDto(productRepository.save(product));
     }
 
-    public ProductWithLocationGetDto editProduct(String productName, String departmentName, String shelf, ProductPutDto productPutDto) throws LocationNotFoundException, DepartmentNotFoundException, ProductNotFoundException {
+    public ProductWithLocationGetDto editProduct(String productName, String departmentName, String shelf, ProductPutDto productPutDto) throws LocationNotFoundException, DepartmentNotFoundException, ProductNotFoundException, ProductAlreadyExistException {
         Location location = findProductLocation(departmentName, shelf);
         Product product = productRepository.findProductByNameAndLocation(productName, location).orElseThrow(ProductNotFoundException::new);
+        if (productRepository.findProductByNameAndLocation(productPutDto.getName(), location).isPresent()) {
+            throw new ProductAlreadyExistException();
+        }
         product.setDescription(productPutDto.getDescription());
-        product.setName(productPutDto.getName());
         product.setQuantity(productPutDto.getQuantity());
         return mapper.productToProductWithLocationGetDto(productRepository.save(product));
     }

@@ -83,9 +83,11 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/v1/users/**").hasAuthority("OP_USER_MANAGEMENT")
                 // OTHERS
                 .mvcMatchers("/**").permitAll()
+                //.and().formLogin()
                 .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                //.sessionManagement();
     }
 
     @Bean
