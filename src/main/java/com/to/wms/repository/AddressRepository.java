@@ -4,8 +4,11 @@ import com.to.wms.model.Address;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface AddressRepository extends MongoRepository<Address, String> {
-
-    Address findAddressByCity(String city);
+    Optional<Address> findAddressByPostCode(String postCode);
+    List<Address> findAddressByCity(String city);
 }

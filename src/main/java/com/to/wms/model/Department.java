@@ -1,6 +1,7 @@
 package com.to.wms.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
@@ -12,6 +13,7 @@ public class Department {
     @Id
     private String id;
 
+    @Indexed(unique = true)
     @NotBlank(message = "name has to be provided")
     private String name;
 

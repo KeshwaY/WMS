@@ -2,6 +2,7 @@ package com.to.wms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
@@ -13,6 +14,7 @@ public class Location {
     @Id
     private String id;
 
+    @Indexed(unique = true)
     private String shelf;
 
     @DocumentReference

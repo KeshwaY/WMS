@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService extends BasicGenericService<ProductRepository>{
@@ -45,14 +46,14 @@ public class ProductService extends BasicGenericService<ProductRepository>{
     }
     public void addProduct(String categoryName, String shelf, Product product) {
         Location location = locationRepository.findLocationByShelf(shelf);
-        Category category = categoryRepository.findCategoryByName(categoryName);
+        Category category = categoryRepository.findByName(categoryName).orElseThrow();
         product.setLocation(location);
         product.setCategory(category);
         productRepository.save(product);
     }
 
     public void updateProductCategory(String categoryName, String productName) {
-        Category category = categoryRepository.findCategoryByName(categoryName);
+        Category category = categoryRepository.findByName(categoryName).orElseThrow();
         Product product = productRepository.findProductByName(productName);
         product.setCategory(category);
         productRepository.save(product);

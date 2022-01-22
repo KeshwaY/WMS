@@ -30,7 +30,7 @@ public class DepartmentService extends BasicGenericService<DepartmentRepository>
     }
 
     public void addDepartment(Department department, String city) {
-        Address address = addressRepository.findAddressByCity(city);
+        Address address = (Address) addressRepository.findAddressByCity(city);
         department.setAddress(address);
         departmentRepository.save(department);
     }
