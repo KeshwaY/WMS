@@ -6,7 +6,6 @@ import com.to.wms.model.Authority;
 import com.to.wms.model.Role;
 import com.to.wms.repository.AuthorityRepository;
 import com.to.wms.repository.RoleRepository;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

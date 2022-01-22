@@ -32,7 +32,7 @@ public class LocationService extends BasicGenericService<LocationRepository>{
     }
 
     public void addLocation(Location location, String departmentName) {
-        Department department = departmentRepository.findDepartmentByName(departmentName);
+        Department department = departmentRepository.findDepartmentByName(departmentName).orElseThrow();
         location.setDepartment(department);
         locationRepository.save(location);
     }

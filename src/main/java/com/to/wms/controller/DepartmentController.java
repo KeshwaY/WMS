@@ -1,7 +1,13 @@
 package com.to.wms.controller;
 
-import com.to.wms.model.Department;
+import com.to.wms.controller.dto.GenericResponseDto;
+import com.to.wms.controller.dto.department.DepartmentGetDto;
+import com.to.wms.controller.dto.department.DepartmentPostDto;
+import com.to.wms.controller.dto.department.DepartmentPutDto;
 import com.to.wms.service.DepartmentService;
+import com.to.wms.service.exceptions.AddressNotFoundException;
+import com.to.wms.service.exceptions.DepartmentAlreadyExistException;
+import com.to.wms.service.exceptions.DepartmentNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,38 +26,45 @@ public class DepartmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<?>> getAllDepartments() {
-        List<?> departments = departmentService.getAll();
+    public ResponseEntity<List<DepartmentGetDto>> getAllDepartments() {
+        List<DepartmentGetDto> departments = departmentService.getAll();
         return ResponseEntity.ok(departments);
     }
 
-    @GetMapping("/by-name")
-    public ResponseEntity<Department> getDepartmentByName(@RequestParam String name) {
-        Department department = departmentService.getDepartmentByName(name);
+    @GetMapping("{name}")
+    public ResponseEntity<DepartmentGetDto> getDepartmentByName(
+            @PathVariable String name
+    ) throws DepartmentNotFoundException {
+        DepartmentGetDto department = departmentService.getDepartmentByName(name);
         return ResponseEntity.ok(department);
     }
 
     @GetMapping("/by-city")
-    public ResponseEntity<Department> getDepartmentByCity(@RequestParam String city) {
-        Department department = departmentService.getDepartmentByCity(city);
+    public ResponseEntity<List<DepartmentGetDto>> getDepartmentByCity(
+            @RequestParam String city
+    ) throws DepartmentNotFoundException {
+        List<DepartmentGetDto> department = departmentService.getDepartmentByCity(city);
         return ResponseEntity.ok(department);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Void> addDepartment(@Valid @RequestBody Department department, @RequestParam String city) {
-        departmentService.addDepartment(department, city);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<DepartmentGetDto> addDepartment(
+            @Valid @RequestBody DepartmentPostDto departmentPostDto
+    ) throws AddressNotFoundException, DepartmentAlreadyExistException {
+        DepartmentGetDto department = departmentService.addDepartment(departmentPostDto);
+        return new ResponseEntity<>(department, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> editDepartment(@Valid @RequestBody Department departmentToUpdate, @PathVariable String id) {
-        departmentService.editDepartment(id, departmentToUpdate);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping("/{name}")
+    public ResponseEntity<DepartmentGetDto> editDepartment(
+            @Valid @RequestBody DepartmentPutDto departmentToUpdate,
+            @PathVariable String name
+    ) throws AddressNotFoundException, DepartmentNotFoundException {
+        return new ResponseEntity<>(departmentService.editDepartment(name, departmentToUpdate), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDepartment(@PathVariable String id) {
-        departmentService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{name}")
+    public ResponseEntity<GenericResponseDto> deleteDepartment(@PathVariable String name) throws DepartmentNotFoundException {
+        return ResponseEntity.ok(departmentService.deleteByName(name));
     }
 }

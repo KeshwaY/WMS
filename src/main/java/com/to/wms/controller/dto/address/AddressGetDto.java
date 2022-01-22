@@ -11,6 +11,17 @@ public class AddressGetDto {
     private String street;
     private String number;
 
+    public AddressGetDto() {
+    }
+
+    public AddressGetDto(String country, String city, String postCode, String street, String number) {
+        this.country = country;
+        this.city = city;
+        this.postCode = postCode;
+        this.street = street;
+        this.number = number;
+    }
+
     public String getCountry() {
         return country;
     }

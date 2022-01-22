@@ -1,7 +1,6 @@
 package com.to.wms.controller;
 
 import com.to.wms.controller.dto.authority.AuthorityGetDto;
-import com.to.wms.model.Authority;
 import com.to.wms.service.AuthorityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

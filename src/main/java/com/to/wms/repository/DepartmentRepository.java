@@ -5,6 +5,9 @@ import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface DepartmentRepository extends MongoRepository<Department, String> {
 
@@ -12,7 +15,7 @@ public interface DepartmentRepository extends MongoRepository<Department, String
             "{$lookup: {from: 'address', localField: 'address', foreignField: '_id', as: 'addressDoc'}}, " +
                     "{$match: {'addressDoc.city': '?0'}}, {$project: {addressDoc: 0}}"
     })
-    Department findDepartmentByAddressCity(String city);
+    List<Department> findByCityName(String city);
 
-    Department findDepartmentByName(String departmentName);
+    Optional<Department> findDepartmentByName(String departmentName);
 }
