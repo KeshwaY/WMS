@@ -39,7 +39,7 @@ public class DepartmentController {
         return ResponseEntity.ok(department);
     }
 
-    @GetMapping("/by-city")
+    @GetMapping(params = "city")
     public ResponseEntity<List<DepartmentGetDto>> getDepartmentByCity(
             @RequestParam String city
     ) throws DepartmentNotFoundException {
@@ -47,7 +47,7 @@ public class DepartmentController {
         return ResponseEntity.ok(department);
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<DepartmentGetDto> addDepartment(
             @Valid @RequestBody DepartmentPostDto departmentPostDto
     ) throws AddressNotFoundException, DepartmentAlreadyExistException {

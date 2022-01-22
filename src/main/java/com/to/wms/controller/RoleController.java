@@ -30,7 +30,7 @@ public class RoleController {
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    @PostMapping(params = {"authority"})
     public ResponseEntity<Role> addRole(
             @RequestBody @Valid Role role,
             @RequestParam("authority") List<String> authorities

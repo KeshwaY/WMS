@@ -31,12 +31,12 @@ public class AddressController {
         return ResponseEntity.ok(address);
     }
 
-    @GetMapping("/by-city")
+    @GetMapping(params = {"city"})
     public ResponseEntity<List<AddressGetDto>> getAddressByCity(@RequestParam String city) {
         return ResponseEntity.ok(addressService.getAddressByCity(city));
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<AddressGetDto> addAddress(
             @RequestBody @Valid AddressPostDto address
     ) throws AddressAlreadyExistException {

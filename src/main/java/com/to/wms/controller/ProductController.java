@@ -102,7 +102,6 @@ public class ProductController {
             ) throws ProductNotFoundException, LocationNotFoundException, DepartmentNotFoundException {
         ProductWithLocationGetDto product = productService.editProduct(productName, department, shelf, productPutDto);
         return new ResponseEntity<>(product, HttpStatus.OK);
-
     }
 
     @DeleteMapping("/{productName}")

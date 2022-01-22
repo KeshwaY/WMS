@@ -51,7 +51,7 @@ public class UserController {
     @PutMapping("/{login}")
     public ResponseEntity<User> updateUser(
             @PathVariable String login,
-            @RequestParam("change") String changeType,
+            @RequestParam("update") String changeType,
             @RequestBody @Valid GenericPutDto genericPutDto
     ) throws UserNotFoundException, LoginAlreadyExistException, RoleNotFoundException {
         User user = userService.updateUser(login, changeType, genericPutDto);
