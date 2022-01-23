@@ -1,6 +1,7 @@
 package com.to.wms.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
@@ -17,6 +18,7 @@ public class Address {
     @NotBlank(message = "city has to be provided")
     private String city;
 
+    @Indexed(unique = true)
     @NotBlank(message = "postcode has to be provided")
     private String postCode;
 

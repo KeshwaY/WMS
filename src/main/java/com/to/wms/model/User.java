@@ -6,9 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -19,23 +17,17 @@ public class User {
     private String id;
 
     @Indexed(unique = true)
-    @NotBlank(message = "login has to be provided")
     private String login;
 
-    @NotBlank(message = "password is required")
     @Size(min = 6, max = 20)
     private String password;
 
-    @NotBlank(message = "Email is required")
     private String name;
 
-    @NotBlank(message = "Email is required")
-    private String surname;
+    private String lastname;
 
-    @NotBlank(message = "Email is required")
     private String phoneNumber;
 
-    @Email
     @NotBlank
     private String email;
 
@@ -77,12 +69,12 @@ public class User {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getPhoneNumber() {

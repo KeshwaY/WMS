@@ -1,14 +1,20 @@
 package com.to.wms.controller;
 
-import com.to.wms.model.Address;
+import com.to.wms.controller.dto.GenericResponseDto;
+import com.to.wms.controller.dto.address.AddressGetDto;
+import com.to.wms.controller.dto.address.AddressPostDto;
 import com.to.wms.service.AddressService;
+import com.to.wms.service.exceptions.AddressAlreadyExistException;
+import com.to.wms.service.exceptions.AddressNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1/address")
 public class AddressController {
@@ -20,32 +26,33 @@ public class AddressController {
     }
 
     @GetMapping
-    public ResponseEntity<List<?>> getAll() {
-        List<?> adresses = addressService.getAll();
-        return ResponseEntity.ok(adresses);
-    }
-
-    @GetMapping("/by-city")
-    public ResponseEntity<Address> getAddressByCity(@RequestParam String city) {
-        Address address = addressService.getAddressByCity(city);
+    public ResponseEntity<List<AddressGetDto>> getAll() {
+        List<AddressGetDto> address = addressService.getAll();
         return ResponseEntity.ok(address);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Void> addAddress(@Valid @RequestBody Address address) {
-        addressService.addAddress(address);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @GetMapping(params = {"city"})
+    public ResponseEntity<List<AddressGetDto>> getAddressByCity(@RequestParam String city) {
+        return ResponseEntity.ok(addressService.getAddressByCity(city));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateAddress(@Valid @RequestBody Address address, @PathVariable String id) {
-        addressService.editAddress(address, id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<AddressGetDto> addAddress(
+            @RequestBody @Valid AddressPostDto address
+    ) throws AddressAlreadyExistException {
+        return new ResponseEntity<>(addressService.addAddress(address), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public  ResponseEntity<Void> deleteAddress(@PathVariable String id) {
-        addressService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    @PutMapping("/{post_code}")
+    public ResponseEntity<AddressGetDto> updateAddress(
+            @PathVariable("post_code") String postCode,
+            @RequestBody @Valid AddressPostDto address
+    ) throws AddressAlreadyExistException, AddressNotFoundException {
+        return new ResponseEntity<>(addressService.editAddress(address, postCode), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{post_code}")
+    public  ResponseEntity<GenericResponseDto> deleteAddress(@PathVariable("post_code") String postCode) throws AddressNotFoundException {
+        return ResponseEntity.ok(addressService.deleteByPostCode(postCode));
     }
 }

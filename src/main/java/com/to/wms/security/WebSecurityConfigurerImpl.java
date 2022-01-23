@@ -42,33 +42,36 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // ADDRESS
                 .mvcMatchers(
-                        "/api/v1/address",
-                        "/api/v1/address/by-city"
+                        HttpMethod.GET,
+                        "/api/v1/address"
                 ).hasAnyAuthority("OP_ADDRESS_MANAGEMENT", "WAREHOUSEMAN_ADDRESS")
                 .mvcMatchers("/api/v1/address/**").hasAuthority("OP_ADDRESS_MANAGEMENT")
                 // DEPARTMENT
-                .mvcMatchers("/api/v1/departments/by-name").hasAnyAuthority("OP_DEPARTMENTS_MANAGEMENT", "WAREHOUSEMAN_DEPARTMENTS")
+                .mvcMatchers(
+                        HttpMethod.GET,
+                        "/api/v1/departments/**"
+                ).hasAnyAuthority("OP_DEPARTMENTS_MANAGEMENT", "WAREHOUSEMAN_DEPARTMENTS")
                 .mvcMatchers("/api/v1/departments/**").hasAuthority("OP_DEPARTMENTS_MANAGEMENT")
                 // LOCATIONS
                 .mvcMatchers(
-                        "/api/v1/locations",
-                        "/api/v1/locations/shelf",
-                        "/api/v1/locations/department"
+                        HttpMethod.GET,
+                        "/api/v1/locations/**"
                 ).hasAnyAuthority("OP_LOCATIONS_MANAGEMENT", "WAREHOUSEMAN_LOCATIONS")
                 .mvcMatchers("/api/v1/locations/**").hasAuthority("OP_LOCATIONS_MANAGEMENT")
                 // CATEGORY
                 .mvcMatchers(
-                        "/api/v1/categories/by-name",
-                        "/api/v1/categories"
+                        HttpMethod.GET,
+                        "/api/v1/categories/**"
                 ).hasAnyAuthority("OP_CATEGORY_MANAGEMENT", "WAREHOUSE_CATEGORY")
                 .mvcMatchers("/api/v1/categories/**").hasAuthority("OP_CATEGORY_MANAGEMENT")
                 // PRODUCT
                 .mvcMatchers(
-                        "/api/v1/products",
-                        "/api/v1/products/quantity/**",
-                        "/api/v1/products/name",
-                        "/api/v1/products/shelf",
-                        "/api/v1/products/category"
+                        HttpMethod.GET,
+                        "/api/v1/products/**"
+                ).hasAnyAuthority("OP_PRODUCT_MANAGEMENT", "WAREHOUSEMAN_PRODUCT")
+                .mvcMatchers(
+                        HttpMethod.PATCH,
+                        "/api/v1/products/*/quantity"
                 ).hasAnyAuthority("OP_PRODUCT_MANAGEMENT", "WAREHOUSEMAN_PRODUCT")
                 .mvcMatchers("/api/v1/products/**").hasAuthority("OP_PRODUCT_MANAGEMENT")
                 // ROLES
@@ -80,9 +83,11 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/v1/users/**").hasAuthority("OP_USER_MANAGEMENT")
                 // OTHERS
                 .mvcMatchers("/**").permitAll()
+                //.and().formLogin()
                 .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                //.sessionManagement();
     }
 
     @Bean
